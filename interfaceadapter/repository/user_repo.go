@@ -3,6 +3,7 @@ package repository
 import (
 	"goclean/entity"
 	"goclean/usecase"
+	"goclean-architecture/infrastructure"
 )
 
 func NewUserRepo() usecase.UserRepo {
@@ -13,9 +14,15 @@ func NewUserRepo() usecase.UserRepo {
 type userRepoImpl struct{}
 
 func (r *userRepoImpl) Get(id string) (*entity.User, error) {
-	// TODO: call database
+	// TODO: call database, this is just draft call
+	row, err := infrastructure.Get("user", id)
+	if err != nil{
+		return nil, err
+	}
+	rowData, _ := row.(map[string]string)
+
 	user := &entity.User{
-		Id: id,
+		Id: rowData["id"],
 	}
 	return user, nil
 }
